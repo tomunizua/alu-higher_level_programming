@@ -19,4 +19,4 @@ if __name__ == "__main__":
         result = mul(int(argv[1]), int(argv[3]))
     else:
         result = div(int(argv[1]), int(argv[3]))
-    print(f"{int(argv[1]} {argv[2]} {int(argv[3])} = {result}")
+    print(f"{int(argv[1])} {argv[2]} {int(argv[3])} = {result}")
