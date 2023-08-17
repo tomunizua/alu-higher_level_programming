@@ -1,81 +1,61 @@
 #!/usr/bin/python3
-'''Tests for base class
-'''
+"""
+This is the testfile
+
+for the module base.py
+
+in the models/ directory
+"""
+
+
 import unittest
 from models.base import Base
+import json
+
+# test_object1 = Base()
+# test_object2 = Base()
+# test_object3 = Base(89)
 
 
-class BaseClassTest(unittest.TestCase):
-    '''Unit test for Base class inherits from unittest.TestCase
-    '''
+class TestBase(unittest.TestCase):
+    """
+    This is the unittest class
 
-    def test_no_arg_base(self):
-        '''Ensures the right value is assigned to id
-        '''
-        b1 = Base()
-        b2 = Base()
-        self.assertTrue(len(Base.__doc__))
-        self.assertTrue(len(Base.__init__.__doc__))
-        self.assertEqual(b1.id, b2.id - 1)
+    for the base.py class
 
-    def test_increment(self):
-        '''Ensures that id is increased by 1 if no argument is supplied
-        '''
-        b1 = Base()
-        b2 = Base()
-        b3 = Base()
-        self.assertEqual(b3.id, b2.id + 1)
+    in the models directory
+    """
+    def test_base_with_or_without_args(self):
+        """
+        This test for the instance
 
-    def test_id_args(self):
-        '''checks if supplied argument is correctly handled
-        '''
-        b1 = Base(12)
-        self.assertEqual(b1.id, Base(12).id)
+        of the Base class without
 
-    def test_id_None(self):
-        '''Check class behavior with None as argument
-        '''
-        b1 = Base(None)
-        self.assertEqual(b1.id, 1)
+        arguement to see if the id are
 
-    def test_id_public(self):
-        '''Ensures that id is a public instance attribute
-        '''
-        b1 = Base(20)
-        b1.id = 21
-        self.assertEqual(b1.id, Base(21).id)
+        given consecutively after initialization
+        """
+        self.base1 = Base()
+        self.base2 = Base()
+        self.base3 = Base(89)
+        self.assertEqual(self.base1.id, 1)
+        self.assertEqual(self.base2.id, 2)
+        self.assertEqual(self.base3.id, 89)
 
-    def test_id_as_string(self):
-        '''Tests to ensure that id is not checked for types
-        '''
-        b1 = Base("Shobi")
-        self.assertEqual(b1.id, "Shobi")
+    def test_base_to_json_strings(self):
+        self.base4 = Base.to_json_string(None)
+        self.base5 = Base.to_json_string([])
+        self.base6 = Base.to_json_string([ { 'id': 12 }])
+        self.assertListEqual(json.loads(self.base4), [])
+        self.assertListEqual(json.loads(self.base5), [])
+        self.assertListEqual(json.loads(self.base6), [ { 'id': 12 }])
 
-    def test_id_as_float(self):
-        '''Tests that id can be assigned to any type
-        '''
-        b1 = Base(2.9)
-        self.assertEqual(b1.id, 2.9)
-
-    def test_id_as_inf(self):
-        '''Tests that id can be assigned to float inf
-        '''
-        b1 = Base(float('inf'))
-        self.assertEqual(b1.id, float('inf'))
-
-    def test_nb_objects_is_private(self):
-        '''Tests that  __nb_objects is a private class attribute
-        '''
-        with self.assertRaises(AttributeError):
-            Base.__nb_objects += 1
-
-    def test_nb_objects(self):
-        '''Tests that __nb_objects is a class attribute
-        '''
-        b1 = Base()
-        with self.assertRaises(AttributeError):
-            b1.__nb_objects += 1
-
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_base_from_json_strings(self):
+        self.base7 = Base.from_json_string(None)
+        self.base8 = Base.from_json_string("[]")
+        self.base9 = Base.from_json_string('[{ "id": 89 }]')
+        self.base10 = Base.from_json_string('[{ "id": 89 }]')
+        self.assertEqual(json.dumps(self.base7), "[]")
+        self.assertEqual(json.dumps(self.base8), "[]")
+        self.assertEqual(json.dumps(self.base9), '[{"id": 89}]')
+        self.assertEqual(json.dumps(self.base10), '[{"id": 89}]')
